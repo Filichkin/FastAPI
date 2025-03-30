@@ -4,11 +4,11 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get('/hi')
+@app.get('/simple_app')
 def greet():
     return 'Test FastAPI'
 
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run('hello:app', reload=True)
+    uvicorn.run('simple_app:app', reload=True)
