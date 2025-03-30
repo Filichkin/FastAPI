@@ -1,11 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 
 
 app = FastAPI()
 
 
-@app.get('/simple_app')
-def greet(target):
+@app.post('/simple_app')
+def greet(target: str = Body(embed=True)):
     return f'Test FastAPI for {target}'
 
 
