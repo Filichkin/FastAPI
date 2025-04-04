@@ -19,3 +19,13 @@ simple_app.py
 ```
 simple_app_async.py
 ```
+
+<ul>
+  <li>
+    Зависимости FastAPI
+  </li>
+</ul>
+
+```
+depends.py
+```
