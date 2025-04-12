@@ -5,7 +5,7 @@ from model.creature import Creature
 
 curs.execute(
     """CREATE TABLE IF NOT EXIST creature(
-       name TEXT primary key,
+       name TEXT PRIMARY KEY,
        country TEXT,
        area TEXT,
        description TEXT,
