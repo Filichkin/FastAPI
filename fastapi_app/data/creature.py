@@ -1,18 +1,16 @@
-import sqlite3
+from .init import curs
 
 from model.creature import Creature
 
 
-DB_NAME = 'test.db'
-
-conn = sqlite3.connect(DB_NAME)
-curs = conn.cursor()
-
-
-def init():
-    curs.execute(
-        'CREATE TABLE creature(name, description, country, area, aka)'
-    )
+curs.execute(
+    """CREATE TABLE IF NOT EXIST creature(
+       name TEXT primary key,
+       country TEXT,
+       area TEXT,
+       description TEXT,
+       aka TEXT)"""
+)
 
 
 def row_to_model(row: tuple) -> Creature:
@@ -39,22 +37,29 @@ def get_all(name: str) -> list[Creature]:
     return [row_to_model(row) for row in rows]
 
 
-def create(creature: Creature):
+def create(creature: Creature) -> Creature:
     qry = '''INSERT INTO creature VALUES
           (:name, :description, c:ountry, :area, :aka)'''
     params = model_to_dict(creature)
     curs.execute(qry, params)
 
 
-def modify(creature: Creature):
-    return creature
+def modify(creature: Creature) -> Creature:
+    qry = '''UPDATE creature SET
+             name=:name,
+             country=:country,
+             area=:area,
+             description=:description,
+             aka=:aka
+             where name=:orig_name'''
+    params = model_to_dict(creature)
+    params['orig_name'] = creature.name
+    _ = curs.execute(qry, params)
+    return get_one(creature.name)
 
 
-def replace(creature: Creature):
-    return creature
-
-
-def delete(creature: Creature):
+def delete(creature: Creature) -> bool:
     qry = 'DELETE FROM creature WHERE name=:name'
     params = {'name': creature.name}
-    curs.execute(qry, params)
+    result = curs.execute(qry, params)
+    return bool(result)
