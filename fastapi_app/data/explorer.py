@@ -4,7 +4,7 @@ from model.explorer import Explorer
 
 
 curs.execute(
-    """CREATE TABLE IF NOT EXIST explorer(
+    """CREATE TABLE IF NOT EXISTS explorer (
        name PRIMARY KEY,
        country TEXT,
        description TEXT)"""
