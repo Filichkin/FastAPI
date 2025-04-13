@@ -1,38 +1,46 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 import data.explorer as service
+from error import Duplicate, Missing
 from model.explorer import Explorer
 
 
 router = APIRouter(prefix='/explorer')
 
 
-@router.get('')
-@router.get('/')
+@router.get('', status_code=201)
+@router.get('/', status_code=201)
 def get_all() -> list[Explorer]:
     return service.get_all()
 
 
 @router.get('/{name}')
 def get_one(name) -> Explorer:
-    return service.get_one(name)
+    try:
+        return service.get_one(name)
+    except Missing as exc:
+        raise HTTPException(status_code=404, detail=exc.msg)
 
 
 @router.post('/')
 def create(explorer: Explorer) -> Explorer:
-    return service.create(explorer)
+    try:
+        return service.create(explorer)
+    except Duplicate as exc:
+        raise HTTPException(status_code=404, detail=exc.msg)
 
 
 @router.patch('/')
 def modify(explorer: Explorer) -> Explorer:
-    return service.modify(explorer)
+    try:
+        return service.modify(explorer)
+    except Missing as exc:
+        raise HTTPException(status_code=404, detail=exc.msg)
 
 
-@router.put('/')
-def replace(explorer: Explorer) -> Explorer:
-    return service.replace(explorer)
-
-
-@router.delete('/{name}')
+@router.delete('/{name}', status_code=204)
 def delete(name: str):
-    return None
+    try:
+        return service.delete(name)
+    except Missing as exc:
+        raise HTTPException(status_code=404, detail=exc.msg)

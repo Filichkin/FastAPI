@@ -1,5 +1,5 @@
-from .init import curs
-
+from error import Duplicate, Missing
+from .init import curs, conn, IntegrityError
 from model.creature import Creature
 
 
@@ -27,7 +27,10 @@ def get_one(name: str) -> Creature:
     params = {'name': name}
     curs.execute(qry, params)
     row = curs.fetchone()
-    return row_to_model(row)
+    if row:
+        return row_to_model(row)
+    else:
+        raise Missing(msg=f'Creature {name} not found')
 
 
 def get_all(name: str) -> list[Creature]:
@@ -41,7 +44,13 @@ def create(creature: Creature) -> Creature:
     qry = '''INSERT INTO creature VALUES
           (:name, :description, c:ountry, :area, :aka)'''
     params = model_to_dict(creature)
-    curs.execute(qry, params)
+    try:
+        curs.execute(qry, params)
+    except IntegrityError:
+        raise Duplicate(
+            msg=f'Creature {creature.name} already exists'
+        )
+    return get_one(creature.name)
 
 
 def modify(creature: Creature) -> Creature:
@@ -54,12 +63,16 @@ def modify(creature: Creature) -> Creature:
              where name=:orig_name'''
     params = model_to_dict(creature)
     params['orig_name'] = creature.name
-    _ = curs.execute(qry, params)
-    return get_one(creature.name)
+    curs.execute(qry, params)
+    if curs.rowcount == 1:
+        return get_one(creature.name)
+    else:
+        raise Missing(msg=f'Creature {creature.name} not found')
 
 
 def delete(creature: Creature) -> bool:
     qry = 'DELETE FROM creature WHERE name=:name'
     params = {'name': creature.name}
-    result = curs.execute(qry, params)
-    return bool(result)
+    curs.execute(qry, params)
+    if curs.rowcount != 1:
+        raise Missing(msg=f'Creature {creature.name} not found')
