@@ -15,7 +15,13 @@ curs.execute(
 
 def row_to_model(row: tuple) -> Creature:
     name, description, country, area, aka = row
-    return Creature(name, description, country, area, aka)
+    return Creature(
+        name=name,
+        country=country,
+        area=area,
+        description=description,
+        aka=aka
+    )
 
 
 def model_to_dict(creature: Creature) -> dict:
@@ -42,7 +48,7 @@ def get_all(name: str) -> list[Creature]:
 
 def create(creature: Creature) -> Creature:
     qry = '''INSERT INTO creature VALUES
-          (:name, :description, c:ountry, :area, :aka)'''
+          (:name, :description, :country, :area, :aka)'''
     params = model_to_dict(creature)
     try:
         curs.execute(qry, params)
@@ -54,7 +60,7 @@ def create(creature: Creature) -> Creature:
     return get_one(creature.name)
 
 
-def modify(creature: Creature) -> Creature:
+def modify(name: str, creature: Creature) -> Creature:
     qry = '''UPDATE creature SET
              name=:name,
              country=:country,
@@ -63,13 +69,13 @@ def modify(creature: Creature) -> Creature:
              aka=:aka
              where name=:orig_name'''
     params = model_to_dict(creature)
-    params['orig_name'] = creature.name
+    params['orig_name'] = name
     curs.execute(qry, params)
     if curs.rowcount == 1:
         conn.commit()
         return get_one(creature.name)
     else:
-        raise Missing(msg=f'Creature {creature.name} not found')
+        raise Missing(msg=f'Creature {name} not found')
 
 
 def delete(creature: Creature) -> bool:

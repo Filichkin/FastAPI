@@ -68,10 +68,10 @@ def modify(name: str, explorer: Explorer) -> Explorer:
         raise Missing(msg=f'Explorer {name} not found')
 
 
-def delete(name: str) -> bool:
+def delete(explorer: Explorer) -> bool:
     qry = 'DELETE FROM explorer WHERE name = :name'
-    params = {'name': name}
+    params = {'name': explorer.name}
     curs.execute(qry, params)
     conn.commit()
     if curs.rowcount != 1:
-        raise Missing(msg=f'Explorer {name} not found')
+        raise Missing(msg=f'Explorer {explorer.name} not found')
