@@ -30,17 +30,12 @@ def create(creature: Creature) -> Creature:
         raise HTTPException(status_code=404, detail=exc.msg)
 
 
-@router.patch('/')
-def modify(creature: Creature) -> Creature:
+@router.patch('/{name}')
+def modify(name: str, creature: Creature) -> Creature:
     try:
-        return service.modify(creature)
+        return service.modify(name, creature)
     except Missing as exc:
         raise HTTPException(status_code=404, detail=exc.msg)
-
-
-@router.put('/')
-def replace(creature: Creature) -> Creature:
-    return service.replace(creature)
 
 
 @router.delete('/{name}', status_code=204)

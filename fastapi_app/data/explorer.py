@@ -48,6 +48,7 @@ def create(explorer: Explorer) -> Explorer:
         raise Duplicate(
             msg=f'Explorer {explorer.name} already exists'
         )
+    conn.commit()
     return get_one(explorer.name)
 
 
@@ -59,7 +60,9 @@ def modify(name: str, explorer: Explorer) -> Explorer:
     params = model_to_dict(explorer)
     params['orig_name'] = name
     curs.execute(qry, params)
+    conn.commit()
     if curs.rowcount == 1:
+        conn.commit()
         return get_one(explorer.name)
     else:
         raise Missing(msg=f'Explorer {name} not found')
@@ -69,5 +72,6 @@ def delete(name: str) -> bool:
     qry = 'DELETE FROM explorer WHERE name = :name'
     params = {'name': name}
     curs.execute(qry, params)
+    conn.commit()
     if curs.rowcount != 1:
         raise Missing(msg=f'Explorer {name} not found')

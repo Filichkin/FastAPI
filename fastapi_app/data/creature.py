@@ -50,6 +50,7 @@ def create(creature: Creature) -> Creature:
         raise Duplicate(
             msg=f'Creature {creature.name} already exists'
         )
+    conn.commit()
     return get_one(creature.name)
 
 
@@ -65,6 +66,7 @@ def modify(creature: Creature) -> Creature:
     params['orig_name'] = creature.name
     curs.execute(qry, params)
     if curs.rowcount == 1:
+        conn.commit()
         return get_one(creature.name)
     else:
         raise Missing(msg=f'Creature {creature.name} not found')
@@ -74,5 +76,6 @@ def delete(creature: Creature) -> bool:
     qry = 'DELETE FROM creature WHERE name=:name'
     params = {'name': creature.name}
     curs.execute(qry, params)
+    conn.commit()
     if curs.rowcount != 1:
         raise Missing(msg=f'Creature {creature.name} not found')
