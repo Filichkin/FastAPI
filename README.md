@@ -29,3 +29,13 @@ simple_app_async.py
 ```
 depends.py
 ```
+
+<ul>
+  <li>
+    Глобальная аутентификация
+  </li>
+</ul>
+
+```
+auth_user.py
+```
