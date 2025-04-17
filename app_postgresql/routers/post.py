@@ -3,8 +3,10 @@ import uuid
 from fastapi import Depends, HTTPException, status, APIRouter, Response
 from sqlalchemy.orm import Session
 
-from .. import schemas, models
-from ..database import get_db
+import models
+import schemas
+
+from database import get_db
 
 from ..oauth2 import require_user
 

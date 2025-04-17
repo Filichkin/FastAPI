@@ -10,11 +10,13 @@ from fastapi import (
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
-from .. import oauth2
-from .. import schemas, models, utils
-from ..database import get_db
-from ..oauth2 import AuthJWT
-from ..config import settings
+import models
+import schemas
+import oauth2
+import utils
+from database import get_db
+from oauth2 import AuthJWT
+from config import settings
 
 
 router = APIRouter()

@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from . import models
-from .database import get_db
-from .config import settings
+from database import get_db
+from config import settings
 
 
 class Settings(BaseModel):
