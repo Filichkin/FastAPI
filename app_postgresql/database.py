@@ -8,7 +8,7 @@ SQLALCHEMY_DATABASE_URL = (
     f'postgresql://{settings.POSTGRES_USER}:'
     f'{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:'
     f'{settings.DATABASE_PORT}/{settings.POSTGRES_DB}'
-    )
+)
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL
