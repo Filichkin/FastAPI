@@ -162,3 +162,5 @@ commands.txt
 photo/
 
 db/
+
+*.pem
