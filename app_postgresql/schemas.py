@@ -18,7 +18,7 @@ class UserBaseSchema(BaseModel):
 
 
 class CreateUserSchema(UserBaseSchema):
-    password: str = constr(min_length=MIN_LENGHT)
+    password: str
     passwordConfirm: str
     role: str = 'user'
     verified: bool = False
@@ -26,7 +26,7 @@ class CreateUserSchema(UserBaseSchema):
 
 class LoginUserSchema(BaseModel):
     email: EmailStr
-    password: str = constr(min_length=MIN_LENGHT)
+    password: constr(min_length=MIN_LENGHT)
 
 
 class UserResponse(UserBaseSchema):

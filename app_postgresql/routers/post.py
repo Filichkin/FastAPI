@@ -8,7 +8,7 @@ import schemas
 
 from database import get_db
 
-from ..oauth2 import require_user
+from oauth2 import require_user
 
 
 router = APIRouter()
