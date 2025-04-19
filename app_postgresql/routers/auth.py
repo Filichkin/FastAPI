@@ -11,8 +11,8 @@ from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
 import models
-import schemas
 import oauth2
+import schemas
 import utils
 from database import get_db
 from oauth2 import AuthJWT

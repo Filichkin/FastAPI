@@ -5,9 +5,7 @@ from sqlalchemy.orm import Session
 
 import models
 import schemas
-
 from database import get_db
-
 from oauth2 import require_user
 
 

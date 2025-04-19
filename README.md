@@ -39,3 +39,19 @@ depends.py
 ```
 auth_user.py
 ```
+
+<ul>
+  <li>
+    FastAPI и PostgreSQL
+  </li>
+</ul>
+
+```
+/app_postgresql
+```
+
+#### Пример API app_postgresql
+
+<td>
+    <img src="app_postgresql/api.png" width="700"/>&nbsp;
+</td>
